@@ -144,3 +144,4 @@ jobs:
           path: build/app/outputs/flutter-apk/app-release.apk
           if-no-files-found: error
           retention-days: 14
+# Signed release build trigger after permanent signing-key setup.
