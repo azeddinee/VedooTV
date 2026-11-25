@@ -25,7 +25,8 @@ def svg_src(name, scale=1.0):
         s=head+'>'+rest[:defs_end]+t+'</svg>'
     return s
 def shoot(svg, w, h, bg):
-    html=f'<html><body style="margin:0;background:{bg}">{svg.replace("<svg ", f"<svg style=\"display:block;width:{w}px;height:{h}px\" ",1)}</body></html>'
+    svg_open = f'<svg style="display:block;width:{w}px;height:{h}px" '
+    html = f'<html><body style="margin:0;background:{bg}">{svg.replace("<svg ", svg_open, 1)}</body></html>'
     p=f'{TMP}/p.html'; open(p,'w').write(html); out=f'{TMP}/o.png'
     if os.path.exists(out): os.remove(out)
     subprocess.run(['firefox','--headless','--no-remote','--profile',PROF,'--screenshot',out,f'--window-size={w},{h}',f'file://{p}'],
