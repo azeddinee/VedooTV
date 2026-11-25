@@ -85,7 +85,6 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen>
   final _xtreamCodeCtrl = TextEditingController();
   final _xtreamUserCtrl = TextEditingController();
   final _xtreamPassCtrl = TextEditingController();
-  final _epgUrlCtrl = TextEditingController();
   bool _passVisible = false;
 
   // Loading / all-set state
@@ -180,7 +179,6 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen>
     _xtreamCodeCtrl.dispose();
     _xtreamUserCtrl.dispose();
     _xtreamPassCtrl.dispose();
-    _epgUrlCtrl.dispose();
     super.dispose();
   }
 
@@ -262,10 +260,6 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen>
     try {
       final manager = ref.read(sourceManagerProvider);
       final host = 'http://$code.tvway.pro';
-      final epgUrl = _epgUrlCtrl.text.trim().isEmpty
-          ? null
-          : _epgUrlCtrl.text.trim();
-
       void onProgress(String msg) {
         if (mounted) setState(() => _progressMessage = msg);
       }
@@ -276,7 +270,6 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen>
         xtreamHost: host,
         xtreamUsername: _xtreamUserCtrl.text.trim(),
         xtreamPassword: _xtreamPassCtrl.text.trim(),
-        epgUrl: epgUrl,
         onProgress: onProgress,
       );
 
@@ -463,7 +456,6 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen>
             xtreamPassCtrl: _xtreamPassCtrl,
             passVisible: _passVisible,
             onTogglePass: () => setState(() => _passVisible = !_passVisible),
-            epgUrlCtrl: _epgUrlCtrl,
             errorMessage: _errorMessage,
             step: addOnly ? 1 : 2,
             totalSteps: totalSteps,
@@ -1026,7 +1018,6 @@ class _CredentialsPage extends StatelessWidget {
     required this.xtreamPassCtrl,
     required this.passVisible,
     required this.onTogglePass,
-    required this.epgUrlCtrl,
     required this.errorMessage,
     required this.step,
     required this.totalSteps,
@@ -1041,7 +1032,6 @@ class _CredentialsPage extends StatelessWidget {
   final TextEditingController xtreamPassCtrl;
   final bool passVisible;
   final VoidCallback onTogglePass;
-  final TextEditingController epgUrlCtrl;
   final String? errorMessage;
   final int step;
   final int totalSteps;
@@ -1085,15 +1075,6 @@ class _CredentialsPage extends StatelessWidget {
                 : l10n.wizardPasswordShow,
             onPressed: onTogglePass,
           ),
-        ),
-      ],
-      [
-        _WizardField(
-          label: l10n.wizardGuideUrlLabel,
-          ctrl: epgUrlCtrl,
-          hint: l10n.wizardGuideUrlHint,
-          type: TextInputType.url,
-          accentColor: accentColor,
         ),
       ],
     ];
