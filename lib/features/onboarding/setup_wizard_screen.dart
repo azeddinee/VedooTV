@@ -1164,7 +1164,6 @@ class _WizardField extends StatelessWidget {
     required this.ctrl,
     required this.hint,
     required this.accentColor,
-    this.type,
     this.obscure = false,
     this.suffix,
     this.focusNode,
@@ -1174,7 +1173,6 @@ class _WizardField extends StatelessWidget {
   final TextEditingController ctrl;
   final String hint;
   final Color accentColor;
-  final TextInputType? type;
   final bool obscure;
   final Widget? suffix;
   // See TvFocusable.focusNode's doc — plain autofocus isn't reliable on a
@@ -1195,11 +1193,10 @@ class _WizardField extends StatelessWidget {
           builder: (context, fieldNode) => TextField(
             controller: ctrl,
             focusNode: fieldNode,
-            keyboardType: type,
             obscureText: obscure,
             autocorrect: false,
             // No suggestion strip for addresses, logins or secrets.
-            enableSuggestions: !obscure && type != TextInputType.url,
+            enableSuggestions: !obscure,
             // Not an autofill field. An empty hint list does NOT opt out: it
             // leaves the system to guess, and next to a password box it
             // guessed the server address was a password. null opts out.
