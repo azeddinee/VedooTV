@@ -8,7 +8,6 @@ import 'package:open_iptv/core/services/profile_service.dart';
 import 'package:open_iptv/core/storage/preferences.dart';
 import 'package:open_iptv/l10n/gen/app_localizations.dart';
 import 'package:open_iptv/shared/theme/app_theme.dart';
-import 'package:open_iptv/shared/utils/display_name.dart';
 import 'package:open_iptv/shared/utils/snack_bar_utils.dart';
 import 'package:open_iptv/shared/widgets/info_tooltip.dart';
 import 'package:open_iptv/shared/widgets/loading_view.dart';
