@@ -350,7 +350,7 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen>
         final prefs = await ref.read(appPreferencesProvider.future);
         final db = ref.read(appDatabaseProvider);
         final profileSvc = ProfileService(db: db, prefsSnapshot: prefs);
-        final profile = await profileSvc.createProfile(
+        await profileSvc.createProfile(
           name: _nameCtrl.text.trim(),
           avatarEmoji: _avatarEmoji,
           pin: _pin.isEmpty ? null : _pin,
