@@ -23,7 +23,6 @@ import 'package:open_iptv/shared/widgets/detail_header.dart';
 import 'package:open_iptv/shared/widgets/empty_state_view.dart';
 import 'package:open_iptv/shared/widgets/media_rail.dart';
 import 'package:open_iptv/shared/widgets/error_state_view.dart';
-import 'package:open_iptv/shared/widgets/parental_pin_dialog.dart';
 import 'package:open_iptv/shared/widgets/poster_image.dart';
 import 'package:open_iptv/shared/widgets/skeleton.dart';
 import 'package:open_iptv/shared/widgets/star_button.dart';
@@ -122,9 +121,6 @@ class _SeriesScreenState extends ConsumerState<SeriesScreen> {
   @override
   Widget build(BuildContext context) {
     final allAsync = ref.watch(_allSeriesProvider);
-    final profileAsync = ref.watch(activeProfileProvider);
-    final profile = profileAsync.value;
-    final profileId = profile?.id;
 
     final sort = ref.watch(contentSortProvider);
     final posterView = ref.watch(homeLayoutSeriesProvider) != 'compact';
