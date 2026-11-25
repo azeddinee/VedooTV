@@ -25,7 +25,7 @@
 
 ## Builds
 
-VedooTV is being customized in this repository. Release APKs will be published here after the branding and build configuration are validated. Until then, follow the [developer setup](#developer-setup) to build a test APK locally.
+VedooTV is being customized in this repository. Release APKs will be published here after the branding and build configuration are validated. Until then, follow the [developer setup](#developer-setup) to build a test APK locally. Pull requests and branch updates also run the Android validation workflow: it regenerates branded assets, runs analysis and tests, and builds a debug APK artifact.
 
 ---
 
