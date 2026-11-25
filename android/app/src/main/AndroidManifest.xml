@@ -26,7 +26,7 @@
         android:protectionLevel="signature" />
 
     <application
-        android:label="OpenIPTV"
+        android:label="VedooTV"
         android:name=".OpenIptvApplication"
         android:icon="@mipmap/ic_launcher"
         android:banner="@drawable/tv_banner"
