@@ -69,6 +69,8 @@ class _OpenIPTVAppState extends ConsumerState<OpenIPTVApp> {
   late final GoRouter _router;
   final _tooltipController = InfoTooltipController();
   StreamSubscription<String>? _outputNoticeSub;
+  ProviderSubscription<bool>? _pipEnabledSubscription;
+  ProviderSubscription<bool>? _playerOverlaySubscription;
   bool _dbReady = false;
   // True while multiple profiles exist and the user hasn't picked one yet
   // this session.
@@ -174,10 +176,12 @@ class _OpenIPTVAppState extends ConsumerState<OpenIPTVApp> {
         .stateStream
         .listen((_) => pushPipAvailability());
     // Re-evaluate PiP eligibility when the user toggles the setting.
-    ref.listen<bool>(pipEnabledProvider, (_, __) => pushPipAvailability());
+    _pipEnabledSubscription?.close();
+    _pipEnabledSubscription = ref.listenManual<bool>(pipEnabledProvider, (_, __) => pushPipAvailability());
     // Re-evaluate when a transient overlay (channel switcher, multi-view)
     // opens or closes — opening suppresses PiP, closing re-enables it.
-    ref.listen<bool>(playerOverlayOpenProvider, (_, __) => pushPipAvailability());
+    _playerOverlaySubscription?.close();
+    _playerOverlaySubscription = ref.listenManual<bool>(playerOverlayOpenProvider, (_, __) => pushPipAvailability());
 
     // Well after start (counting the big tables takes seconds on a TV):
     // report storage, then the one-time rebuild of an older, bloated file.
@@ -231,6 +235,8 @@ class _OpenIPTVAppState extends ConsumerState<OpenIPTVApp> {
   @override
   void dispose() {
     _outputNoticeSub?.cancel();
+    _pipEnabledSubscription?.close();
+    _playerOverlaySubscription?.close();
     _tooltipController.dispose();
     super.dispose();
   }
