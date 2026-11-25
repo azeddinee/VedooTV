@@ -62,10 +62,25 @@ jobs:
       - name: Build debug APK
         run: flutter build apk --debug
 
+      - name: Build optimized Huawei ARM64 release APK
+        # Huawei P20 Lite uses 64-bit ARM. Building only this ABI avoids
+        # bundling native libraries for unrelated x86 / 32-bit devices.
+        # Keep resource shrinking disabled in build.gradle.kts: it previously
+        # removed dynamically referenced icons and caused startup to hang.
+        run: flutter build apk --release --target-platform android-arm64
+
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
         with:
           name: vedootv-android-debug
           path: build/app/outputs/flutter-apk/app-debug.apk
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload optimized ARM64 release APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: vedootv-android-release-arm64
+          path: build/app/outputs/flutter-apk/app-release.apk
           if-no-files-found: error
           retention-days: 14
