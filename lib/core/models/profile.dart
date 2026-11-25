@@ -21,7 +21,7 @@ class Profile {
     this.categoryOrder = const [],
     this.isKidsProfile = false,
     this.isAdmin = false,
-    this.accentColor = '0A84FF',
+    this.accentColor = '5965F2',
     this.themeId = 'standard',
     });
 
