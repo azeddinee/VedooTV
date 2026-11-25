@@ -22,7 +22,6 @@ import 'package:open_iptv/shared/widgets/detail_header.dart';
 import 'package:open_iptv/shared/widgets/empty_state_view.dart';
 import 'package:open_iptv/shared/widgets/media_rail.dart';
 import 'package:open_iptv/shared/widgets/error_state_view.dart';
-import 'package:open_iptv/shared/widgets/parental_pin_dialog.dart';
 import 'package:open_iptv/shared/widgets/poster_image.dart';
 import 'package:open_iptv/shared/widgets/skeleton.dart';
 import 'package:open_iptv/shared/widgets/star_button.dart';
