@@ -121,6 +121,9 @@ class _SeriesScreenState extends ConsumerState<SeriesScreen> {
   @override
   Widget build(BuildContext context) {
     final allAsync = ref.watch(_allSeriesProvider);
+    final profileAsync = ref.watch(activeProfileProvider);
+    final profile = profileAsync.value;
+    final profileId = profile?.id;
 
     final sort = ref.watch(contentSortProvider);
     final posterView = ref.watch(homeLayoutSeriesProvider) != 'compact';
@@ -340,7 +343,6 @@ class _SeriesGenreScreenState extends ConsumerState<SeriesGenreScreen> {
     final allAsync = ref.watch(_allSeriesProvider);
     final profileAsync = ref.watch(activeProfileProvider);
     final profile = profileAsync.value;
-    final profileId = profile?.id;
     final columns = PlatformHelper.posterColumns(context);
     final sort = ref.watch(contentSortProvider);
     final viewMode = ref.watch(viewModeSeriesProvider);
