@@ -11,7 +11,6 @@ import 'package:open_iptv/core/models/channel.dart';
 import 'package:open_iptv/core/models/programme.dart';
 import 'package:open_iptv/features/sports/fixture_matcher.dart';
 import 'package:open_iptv/features/sports/sports_catalog.dart';
-import 'package:open_iptv/features/sports/sports_match_sheet.dart';
 import 'package:open_iptv/features/sports/sports_models.dart';
 import 'package:open_iptv/features/sports/sports_providers.dart';
 import 'package:open_iptv/features/sports/sports_screen.dart';
