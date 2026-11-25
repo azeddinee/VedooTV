@@ -1,4 +1,4 @@
-"""Exports the OpenIPTV brand PNGs from assets/branding/*.svg.
+"""Exports the VedooTV brand PNGs from assets/branding/*.svg.
 
 Needs Firefox (rendered headless), Pillow and numpy. Transparent artwork is
 rendered on black and on white and un-composited to recover alpha.
