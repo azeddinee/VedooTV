@@ -18,9 +18,6 @@ logo (an abstract orbital mark with no TV-screen or play-button symbol).
 | `tv_banner.svg` | Android TV / Fire TV launcher banner |
 | `readme_banner.svg` | the banner at the top of the GitHub README |
 
-Run  (needs Firefox, Pillow, numpy) to
-re-export everything below after editing an SVG.
-
 Run `python3 assets/branding/export.py` (needs Firefox, Pillow and numpy) to
 re-export everything below after editing an SVG.
 
