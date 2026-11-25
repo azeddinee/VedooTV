@@ -76,7 +76,6 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen>
   // whichever page happened to build first).
   final _startFocusNode = FocusNode();
   final _pin1FocusNode = FocusNode();
-  final _xtreamCardFocusNode = FocusNode();
   final _codeFocusNode = FocusNode();
   String _avatarEmoji = '🧑';
   Color _accentColor = AppTheme.defaultAccent;
@@ -132,7 +131,7 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen>
       // starting point on the first page shown.
       _accentColor = ref.read(accentColorProvider);
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) _xtreamCardFocusNode.requestFocus();
+        if (mounted) _codeFocusNode.requestFocus();
       });
     }
 
@@ -177,7 +176,6 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen>
     _nameFocusNode.dispose();
     _startFocusNode.dispose();
     _pin1FocusNode.dispose();
-    _xtreamCardFocusNode.dispose();
     _codeFocusNode.dispose();
     _xtreamCodeCtrl.dispose();
     _xtreamUserCtrl.dispose();
@@ -460,6 +458,7 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen>
           _CredentialsPage(
             accentColor: _accentColor,
             uniqueCodeCtrl: _xtreamCodeCtrl,
+            codeFocusNode: _codeFocusNode,
             xtreamUserCtrl: _xtreamUserCtrl,
             xtreamPassCtrl: _xtreamPassCtrl,
             passVisible: _passVisible,
@@ -965,7 +964,7 @@ class _PinPageState extends State<_PinPage> {
     return _WizardFrame(
       accentColor: widget.accentColor,
       step: 1,
-      totalSteps: 4,
+      totalSteps: 3,
       onBack: widget.onBack,
       title: l10n.wizardPinTitle,
       subtitle: l10n.wizardPinBody,
@@ -1022,6 +1021,7 @@ class _CredentialsPage extends StatelessWidget {
   const _CredentialsPage({
     required this.accentColor,
     required this.uniqueCodeCtrl,
+    required this.codeFocusNode,
     required this.xtreamUserCtrl,
     required this.xtreamPassCtrl,
     required this.passVisible,
@@ -1036,6 +1036,7 @@ class _CredentialsPage extends StatelessWidget {
 
   final Color accentColor;
   final TextEditingController uniqueCodeCtrl;
+  final FocusNode codeFocusNode;
   final TextEditingController xtreamUserCtrl;
   final TextEditingController xtreamPassCtrl;
   final bool passVisible;
@@ -1058,6 +1059,7 @@ class _CredentialsPage extends StatelessWidget {
           ctrl: uniqueCodeCtrl,
           hint: l10n.wizardUniqueCodeHint,
           accentColor: accentColor,
+          focusNode: codeFocusNode,
         ),
       ],
       [
