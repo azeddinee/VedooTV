@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/azeddinee/VedooTV/releases/latest"><img src="https://img.shields.io/github/v/release/Hunter-Clipper/VedooTV?color=3B82F6&label=release" alt="Latest release"></a>
+  <a href="https://github.com/azeddinee/VedooTV/releases/latest"><img src="https://img.shields.io/github/v/release/azeddinee/VedooTV?color=3B82F6&label=release" alt="Latest release"></a>
   <a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/license-GPL--3.0-8B5CF6" alt="License: GPL-3.0"></a>
   <img src="https://img.shields.io/badge/platform-Android%20%C2%B7%20Android%20TV%20%C2%B7%20Fire%20TV-22D3EE" alt="Platforms">
 </p>
@@ -168,7 +168,7 @@ The versions below are what `pubspec.yaml` and `pubspec.lock` pin; keep this tab
 `intl` stays at 0.20.3 because the Flutter SDK pins it.
 
 ```bash
-git clone https://github.com/Hunter-Clipper/OpenIPTV.git
+git clone https://github.com/azeddinee/VedooTV.git
 cd VedooTV
 flutter pub get
 dart run build_runner build --delete-conflicting-outputs
