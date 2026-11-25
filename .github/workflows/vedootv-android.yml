@@ -49,6 +49,59 @@ jobs:
           python3 -m venv .venv-branding
           .venv-branding/bin/python -m pip install --upgrade Pillow numpy
 
+      - name: Prepare permanent VedooTV release signing key
+        env:
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          set -euo pipefail
+          if [ -z "${ANDROID_KEYSTORE_PASSWORD}" ]; then
+            echo "::error::Add the ANDROID_KEYSTORE_PASSWORD repository secret first."
+            exit 1
+          fi
+          if [ -z "${ANDROID_KEYSTORE_BASE64}" ]; then
+            # First run only: create the permanent key and export ciphertext only.
+            keytool -genkeypair -v \
+              -keystore "$RUNNER_TEMP/vedootv-release.jks" \
+              -storetype JKS -alias vedootv -keyalg RSA -keysize 3072 \
+              -validity 10000 -dname "CN=VedooTV, OU=Android, O=VedooTV, C=MA" \
+              -storepass:env ANDROID_KEYSTORE_PASSWORD \
+              -keypass:env ANDROID_KEYSTORE_PASSWORD
+            openssl enc -aes-256-cbc -salt -pbkdf2 -iter 600000 \
+              -in "$RUNNER_TEMP/vedootv-release.jks" \
+              -out "$RUNNER_TEMP/vedootv-keystore.enc" \
+              -pass env:ANDROID_KEYSTORE_PASSWORD
+            base64 -w0 "$RUNNER_TEMP/vedootv-keystore.enc" \
+              > "$RUNNER_TEMP/vedootv-keystore.enc.b64.txt"
+            echo "BOOTSTRAP_KEY=true" >> "$GITHUB_ENV"
+          else
+            # Later runs: decrypt the saved ciphertext into the temporary runner.
+            printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 -d \
+              > "$RUNNER_TEMP/vedootv-keystore.enc"
+            openssl enc -d -aes-256-cbc -pbkdf2 -iter 600000 \
+              -in "$RUNNER_TEMP/vedootv-keystore.enc" \
+              -out "$RUNNER_TEMP/vedootv-release.jks" \
+              -pass env:ANDROID_KEYSTORE_PASSWORD
+            cp "$RUNNER_TEMP/vedootv-release.jks" android/vedootv-release.jks
+            cat > android/key.properties <<EOF
+          storeFile=vedootv-release.jks
+          storePassword=$ANDROID_KEYSTORE_PASSWORD
+          keyAlias=vedootv
+          keyPassword=$ANDROID_KEYSTORE_PASSWORD
+          EOF
+            chmod 600 android/key.properties android/vedootv-release.jks
+            echo "RELEASE_SIGNING_READY=true" >> "$GITHUB_ENV"
+          fi
+
+      - name: Upload encrypted signing-key backup (first run only)
+        if: env.BOOTSTRAP_KEY == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: vedootv-encrypted-signing-key
+          path: ${{ runner.temp }}/vedootv-keystore.enc.b64.txt
+          if-no-files-found: error
+          retention-days: 7
+
       - name: Resolve Flutter dependencies
         run: flutter pub get
 
@@ -68,6 +121,7 @@ jobs:
         run: flutter build apk --debug
 
       - name: Build optimized Huawei ARM64 release APK
+        if: env.RELEASE_SIGNING_READY == 'true'
         # Huawei P20 Lite uses 64-bit ARM. Building only this ABI avoids
         # bundling native libraries for unrelated x86 / 32-bit devices.
         # Keep resource shrinking disabled in build.gradle.kts: it previously
@@ -83,6 +137,7 @@ jobs:
           retention-days: 14
 
       - name: Upload optimized ARM64 release APK
+        if: env.RELEASE_SIGNING_READY == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: vedootv-android-release-arm64
