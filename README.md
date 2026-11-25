@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/images/banner.png" alt="OpenIPTV — Open source · Ad free · Cross platform" width="720">
+  <img src="assets/branding/readme_banner.svg" alt="VedooTV — Your entertainment. Your way." width="720">
 </p>
 
 <p align="center">
@@ -8,13 +8,13 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Hunter-Clipper/OpenIPTV/releases/latest"><img src="https://img.shields.io/github/v/release/Hunter-Clipper/OpenIPTV?color=3B82F6&label=release" alt="Latest release"></a>
+  <a href="https://github.com/azeddinee/VedooTV/releases/latest"><img src="https://img.shields.io/github/v/release/Hunter-Clipper/VedooTV?color=3B82F6&label=release" alt="Latest release"></a>
   <a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/license-GPL--3.0-8B5CF6" alt="License: GPL-3.0"></a>
   <img src="https://img.shields.io/badge/platform-Android%20%C2%B7%20Android%20TV%20%C2%B7%20Fire%20TV-22D3EE" alt="Platforms">
 </p>
 
 > [!IMPORTANT]
-> **OpenIPTV is only a player. It does not include, host, sell or link to any channels, streams or playlists.**
+> **VedooTV is only a player. It does not include, host, sell or link to any channels, streams or playlists.**
 > You add your own M3U playlist, playlist file or Xtream Codes login from a service you are entitled to use.
 > We don't provide playlists and won't give advice on where to get them. Please make sure you have the
 > right to watch anything you open in the app. The only playlist this project mentions is the public,
@@ -23,14 +23,9 @@
 
 ---
 
-## Install
+## Builds
 
-> **📺 Fire TV / Android TV:** open the **Downloader** app and enter code **`2687835`**
-> (or go to **[aftv.news/2687835](http://aftv.news/2687835)**). It always installs the latest version.
-
-- **Android phone / tablet:** download [`app-release.apk`](https://github.com/Hunter-Clipper/OpenIPTV/releases/latest/download/app-release.apk) from the [latest release](https://github.com/Hunter-Clipper/OpenIPTV/releases/latest) and open it, allowing installs from your browser or file manager.
-- **Fire TV / Android TV:** install the free Downloader app, enter the code above, and allow it to install unknown apps when asked.
-- **Updates:** the app offers new versions itself (automatically every time it starts, or Settings → About → Check for Updates).
+VedooTV is being customized in this repository. Release APKs will be published here after the branding and build configuration are validated. Until then, follow the [developer setup](#developer-setup) to build a test APK locally.
 
 ---
 
@@ -60,7 +55,7 @@
   <sub>On Android TV and Fire TV</sub>
 </p>
 
-<sub>Shown with the public <a href="https://github.com/iptv-org/iptv">iptv-org</a> playlist. OpenIPTV provides no content of its own.</sub>
+<sub>Shown with the public <a href="https://github.com/iptv-org/iptv">iptv-org</a> playlist. VedooTV provides no content of its own.</sub>
 
 ---
 
@@ -80,7 +75,7 @@
 - **Multi-view:** watch several live channels at once — tap **Add a channel** in the player. The screen splits automatically (side by side, one big with smaller ones, or a grid), the sound follows the channel you highlight, and Back keeps that channel full screen. Every channel counts as its own connection with your provider.
 - **Search** across channels, movies, series and the TV guide: look up a show and get **On now**, **Coming up** and **Earlier** rows (three days each way) you can pick to play, with recent searches one tap away.
 - **Catch-up** on providers that support it: channels are marked with a history icon, and opening a show that is already underway asks whether to **start from the beginning** or **watch live** (Settings → Playback → Ask to Start Over). On TV, a catch-up show keeps playing in the guide's preview when you press Back, and holding Back returns to it full screen.
-- **Android Auto:** browse Live TV, Movies and Series on your car's screen and listen while you drive, with play, pause, next and previous on the car display. Your place in movies and episodes is saved. **Parked?** Watch the picture full screen on the car display with the small **OpenIPTV Video** add-on (Settings → Playback → Video in the Car). Cars that limit apps while driving close the picture, and the sound carries on.
+- **Android Auto:** browse Live TV, Movies and Series on your car's screen and listen while you drive, with play, pause, next and previous on the car display. Your place in movies and episodes is saved. **Parked?** Watch the picture full screen on the car display with the small **VedooTV Video** add-on (Settings → Playback → Video in the Car). Cars that limit apps while driving close the picture, and the sound carries on.
 - **Cast to your TV** from your phone: send a channel, movie or episode to a Chromecast or Google TV and keep using the phone as the remote (play, pause, seek, switch channels, volume). Your place in movies and episodes is saved while you cast.
 
 **For the whole household**
@@ -101,13 +96,13 @@
 
 **Power User Tools** (Settings → Advanced, admin profiles)
 - **Network info:** connection type, your device's IP address, DNS servers, whether a VPN is on, and — only when you tap Check — the public IP address your provider sees.
-- **Built-in VPN:** import a **WireGuard** (`.conf`) or **OpenVPN** (`.ovpn`) profile from your VPN provider and send only OpenIPTV — or the whole device, except Android Auto's car link — through it.
+- **Built-in VPN:** import a **WireGuard** (`.conf`) or **OpenVPN** (`.ovpn`) profile from your VPN provider and send only VedooTV — or the whole device, except Android Auto's car link — through it.
 - **Speed test:** how fast video arrives from your provider, plus a general internet test.
 - **Playback buffer:** Fast start, Balanced or Smooth, for steady or shaky connections.
-- **User agent:** the name the player gives your provider. OpenIPTV sends its own by default; change it only if your provider asks for a particular one.
+- **User agent:** the name the player gives your provider. VedooTV sends its own by default; change it only if your provider asks for a particular one.
 - **Skip Database Encryption:** disables SQLCipher encryption (uses plain SQLite) for faster reads on slow TV devices. Off by default; the database converts automatically when toggled.
 
-- **No ads, no tracking, no accounts.** The only outside services OpenIPTV contacts on its own are your playlists and GitHub (update checks, with a Cloudflare-hosted backup copy of the download if GitHub can't be reached). If you opt in to anonymous crash reports, it also sends those (see Privacy). The public-IP and speed tests contact api.ipify.org and speed.cloudflare.com only when you tap them.
+- **No ads, no tracking, no accounts.** The only outside services VedooTV contacts on its own are your playlists and GitHub (update checks, with a Cloudflare-hosted backup copy of the download if GitHub can't be reached). If you opt in to anonymous crash reports, it also sends those (see Privacy). The public-IP and speed tests contact api.ipify.org and speed.cloudflare.com only when you tap them.
 
 ---
 
@@ -115,8 +110,8 @@
 
 | Phase | Target | Status |
 |---|---|---|
-| 1 | Android phone + tablet | ✅ Beta — [latest release](https://github.com/Hunter-Clipper/OpenIPTV/releases/latest) |
-| 2 | Android TV / Fire TV | ✅ Beta — [latest release](https://github.com/Hunter-Clipper/OpenIPTV/releases/latest) |
+| 1 | Android phone + tablet | ✅ Beta — [latest release](https://github.com/azeddinee/VedooTV/releases/latest) |
+| 2 | Android TV / Fire TV | ✅ Beta — [latest release](https://github.com/azeddinee/VedooTV/releases/latest) |
 | 3 | iOS + iPadOS | 📋 Planned |
 | 4 | Apple TV | 📋 Planned |
 | 5 | Windows + macOS | 📋 Planned |
@@ -128,7 +123,7 @@
 
 ## Privacy
 
-OpenIPTV has no ads, accounts or tracking. There is one optional feature:
+VedooTV has no ads, accounts or tracking. There is one optional feature:
 **anonymous crash reports**, off unless you turn them on (you are asked once).
 A report is sent when the app crashes or freezes, and holds only the app
 version, Android version, device model, the date and where in the code it
@@ -174,7 +169,7 @@ The versions below are what `pubspec.yaml` and `pubspec.lock` pin; keep this tab
 
 ```bash
 git clone https://github.com/Hunter-Clipper/OpenIPTV.git
-cd OpenIPTV
+cd VedooTV
 flutter pub get
 dart run build_runner build --delete-conflicting-outputs
 flutter run -d <device-id>
