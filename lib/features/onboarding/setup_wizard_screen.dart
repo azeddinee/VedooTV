@@ -465,7 +465,7 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen>
             onTogglePass: () => setState(() => _passVisible = !_passVisible),
             epgUrlCtrl: _epgUrlCtrl,
             errorMessage: _errorMessage,
-            step: addOnly ? 1 : 3,
+            step: addOnly ? 1 : 2,
             totalSteps: totalSteps,
             onBack: addOnly
                 ? (context.canPop() ? () => context.pop() : null)
@@ -787,7 +787,7 @@ class _NamePage extends StatelessWidget {
     return _WizardFrame(
       accentColor: selectedColor,
       step: 0,
-      totalSteps: 4,
+      totalSteps: 3,
       onBack: onBack,
       title: l10n.wizardNameTitle,
       subtitle: l10n.wizardPrivacyNote,
