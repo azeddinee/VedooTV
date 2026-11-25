@@ -125,9 +125,9 @@
   "@wizardAllSetBody": {
     "description": "Two-line message under the final headline. \\n = line break"
   },
-  "wizardWelcomeTitle": "Welcome to\nOpenIPTV",
+  "wizardWelcomeTitle": "Welcome to\nVedooTV",
   "@wizardWelcomeTitle": {
-    "description": "Large welcome headline. \\n = line break. Keep OpenIPTV on its own line"
+    "description": "Large welcome headline. \\n = line break. Keep VedooTV on its own line"
   },
   "wizardWelcomeSubtitle": "Let's get you set up.\nIt only takes a minute.",
   "@wizardWelcomeSubtitle": {
@@ -145,7 +145,7 @@
   "@wizardNameTitle": {
     "description": "Heading of the profile name page"
   },
-  "wizardPrivacyNote": "All information stays on your device.\nOpenIPTV never collects personal data.",
+  "wizardPrivacyNote": "All information stays on your device.\nVedooTV never collects personal data.",
   "@wizardPrivacyNote": {
     "description": "Reassurance under the name heading. \\n = line break"
   },
@@ -438,7 +438,7 @@
   "@settingsStartOnBootTitle": {
     "description": "TV only toggle: open the app when the TV starts. Also the tooltip title"
   },
-  "settingsStartOnBootBody": "Opens OpenIPTV by itself when the TV starts. Android needs \"Display over other apps\" allowed for OpenIPTV; you will be asked.",
+  "settingsStartOnBootBody": "Opens VedooTV by itself when the TV starts. Android needs \"Display over other apps\" allowed for VedooTV; you will be asked.",
   "@settingsStartOnBootBody": {
     "description": "Info tooltip body. \"Display over other apps\" is an Android system permission name: use the wording Android shows in Spanish"
   },
@@ -446,7 +446,7 @@
   "@settingsStartOnWakeTitle": {
     "description": "TV only toggle: open the app when the TV wakes from sleep. Also the tooltip title"
   },
-  "settingsStartOnWakeBody": "Opens OpenIPTV by itself when the TV wakes from sleep. Android needs \"Display over other apps\" allowed for OpenIPTV; you will be asked.",
+  "settingsStartOnWakeBody": "Opens VedooTV by itself when the TV wakes from sleep. Android needs \"Display over other apps\" allowed for VedooTV; you will be asked.",
   "@settingsStartOnWakeBody": {
     "description": "Info tooltip body"
   },
@@ -454,7 +454,7 @@
   "@settingsOverlayDialogTitle": {
     "description": "Dialog title. Matches the Android permission name"
   },
-  "settingsOverlayDialogBody": "Android only lets OpenIPTV open itself when the TV starts or wakes if \"Display over other apps\" is allowed for it. Open that screen now and switch it on for OpenIPTV.",
+  "settingsOverlayDialogBody": "Android only lets VedooTV open itself when the TV starts or wakes if \"Display over other apps\" is allowed for it. Open that screen now and switch it on for VedooTV.",
   "@settingsOverlayDialogBody": {
     "description": "Dialog body explaining the Android permission"
   },
@@ -639,11 +639,11 @@
   "@wizardAccentColor": {
     "description": "Label above the accent color swatches on the wizard's name page"
   },
-  "consentTitle": "Help improve OpenIPTV?",
+  "consentTitle": "Help improve VedooTV?",
   "@consentTitle": {
     "description": "Title of the one-time dialog asking permission to send anonymous crash reports"
   },
-  "consentBody": "OpenIPTV can send an anonymous report when the app crashes or freezes. A report holds the app version, your device model and where in the code the problem happened. It never holds your playlists, logins, links, channel names or what you watch, and it can't be tied to you.\n\nThis is off unless you turn it on. You can change your mind any time in Settings, where you can also see exactly what is sent. The code that does this is small and open on GitHub if you want to check it.",
+  "consentBody": "VedooTV can send an anonymous report when the app crashes or freezes. A report holds the app version, your device model and where in the code the problem happened. It never holds your playlists, logins, links, channel names or what you watch, and it can't be tied to you.\n\nThis is off unless you turn it on. You can change your mind any time in Settings, where you can also see exactly what is sent. The code that does this is small and open on GitHub if you want to check it.",
   "@consentBody": {
     "description": "Body of the anonymous crash report consent dialog. Privacy wording is deliberate: keep every promise (never sends playlists, logins, links, channel names or viewing). 'Settings' is the app's Settings tab"
   },
@@ -735,7 +735,7 @@
   "@settingsUpdatesTitle": {
     "description": "Settings row, dialog title and info tooltip title for app updates"
   },
-  "settingsUpdatesBody": "Looks for a newer version of OpenIPTV on GitHub and, if there is one, shows what changed and installs it. Only the public release page is contacted — nothing about you or your device is sent. Choose whether this also happens every time the app starts.",
+  "settingsUpdatesBody": "Looks for a newer version of VedooTV on GitHub and, if there is one, shows what changed and installs it. Only the public release page is contacted — nothing about you or your device is sent. Choose whether this also happens every time the app starts.",
   "@settingsUpdatesBody": {
     "description": "Info tooltip body for the updates row"
   },
@@ -763,7 +763,7 @@
   "@settingsProfileTitle": {
     "description": "Settings row and tooltip title for the profile (fallback when no profile name is available)"
   },
-  "settingsProfileBody": "OpenIPTV supports multiple profiles on one device. Each profile has its own watch history, favorites, hidden categories, and PIN lock. Select to manage profiles.",
+  "settingsProfileBody": "VedooTV supports multiple profiles on one device. Each profile has its own watch history, favorites, hidden categories, and PIN lock. Select to manage profiles.",
   "@settingsProfileBody": {
     "description": "Info tooltip body for the profile row"
   },
@@ -880,7 +880,7 @@
   "@settingsStayInformedTitle": {
     "description": "Title of a dialog asking for notification permission"
   },
-  "settingsStayInformedBody": "Allow notifications so OpenIPTV can let you know when a background refresh finishes or runs into a problem?",
+  "settingsStayInformedBody": "Allow notifications so VedooTV can let you know when a background refresh finishes or runs into a problem?",
   "@settingsStayInformedBody": {
     "description": "Body of the notification permission rationale dialog"
   },
@@ -892,7 +892,7 @@
   "@settingsReliableRefreshTitle": {
     "description": "Title of the battery optimisation rationale dialog"
   },
-  "settingsReliableRefreshBody": "Some phones aggressively limit background apps to save battery, which can delay auto-refresh. Exempting OpenIPTV from battery optimization makes refreshes more reliable.",
+  "settingsReliableRefreshBody": "Some phones aggressively limit background apps to save battery, which can delay auto-refresh. Exempting VedooTV from battery optimization makes refreshes more reliable.",
   "@settingsReliableRefreshBody": {
     "description": "Body of the battery optimisation rationale dialog"
   },
@@ -916,7 +916,7 @@
   "@settingsExtraGuidesTitle": {
     "description": "Settings row and tooltip title"
   },
-  "settingsExtraGuidesBody": "Add TV guide files for channels your playlist has no guide for. OpenIPTV matches them by name, and you can pick a guide for any channel yourself.",
+  "settingsExtraGuidesBody": "Add TV guide files for channels your playlist has no guide for. VedooTV matches them by name, and you can pick a guide for any channel yourself.",
   "@settingsExtraGuidesBody": {
     "description": "Info tooltip body for extra guides"
   },
@@ -1037,11 +1037,11 @@
   "@settingsGuideHighlightPlaying": {
     "description": "Switch in TV guide layout"
   },
-  "settingsAboutTitle": "About OpenIPTV",
+  "settingsAboutTitle": "About VedooTV",
   "@settingsAboutTitle": {
     "description": "Settings row, tooltip and dialog title"
   },
-  "settingsAboutBody": "Shows the current app version and license information. OpenIPTV is open-source under the GPL-3.0 license — no ads, no telemetry, no accounts. Ever.",
+  "settingsAboutBody": "Shows the current app version and license information. VedooTV is based on OpenIPTV and distributed under GPL-3.0. No ads; optional anonymous crash reports are off by default.",
   "@settingsAboutBody": {
     "description": "Info tooltip body for About"
   },
@@ -1422,7 +1422,7 @@
   "@vpnNotOpenVpnProfile": {
     "description": "Error when the chosen file is not an OpenVPN profile"
   },
-  "vpnNeedsDeviceCertificate": "This profile needs a certificate stored on the device, which OpenIPTV doesn't support.",
+  "vpnNeedsDeviceCertificate": "This profile needs a certificate stored on the device, which VedooTV doesn't support.",
   "@vpnNeedsDeviceCertificate": {
     "description": "Error for an OpenVPN profile that relies on a certificate in the Android keystore"
   },
@@ -1438,7 +1438,7 @@
   "@vpnConnecting": {
     "description": "Snackbar while the VPN is starting"
   },
-  "vpnNeedsPermission": "OpenIPTV needs your permission to set up a VPN. Select Connect and allow it.",
+  "vpnNeedsPermission": "VedooTV needs your permission to set up a VPN. Select Connect and allow it.",
   "@vpnNeedsPermission": {
     "description": "Snackbar when Android refused the VPN permission prompt. \"Connect\" is the button label powerUserConnect"
   },
@@ -1782,7 +1782,7 @@
   "@carVideoSubtitleInstalled": {
     "description": "Row subtitle when the add-on is installed"
   },
-  "carVideoInfoMissing": "This needs a small add-on app, OpenIPTV Video (about 1 MB).",
+  "carVideoInfoMissing": "This needs a small add-on app, VedooTV Video (about 1 MB).",
   "@carVideoInfoMissing": {
     "description": "Line inside the info dialog when the add-on is missing"
   },
@@ -1794,7 +1794,7 @@
   "@carVideoInfoOutdated": {
     "description": "Line inside the info dialog when the add-on is outdated"
   },
-  "carVideoInfo": "Watch on your car's screen with Android Auto while parked. Android Auto closes the picture when you start driving; the sound keeps playing.\n\nHow to watch: pick a channel, movie or episode in OpenIPTV on the car screen, then open Video — the second OpenIPTV icon.\n\n{addonLine}\n\nIf it doesn't show up in the car: in the Android Auto app on your phone, turn on developer settings and \"Unknown sources\".",
+  "carVideoInfo": "Watch on your car's screen with Android Auto while parked. Android Auto closes the picture when you start driving; the sound keeps playing.\n\nHow to watch: pick a channel, movie or episode in VedooTV on the car screen, then open Video — the second VedooTV icon.\n\n{addonLine}\n\nIf it doesn't show up in the car: in the Android Auto app on your phone, turn on developer settings and \"Unknown sources\".",
   "@carVideoInfo": {
     "description": "Body of the car video info dialog. {addonLine} is one of carVideoInfoMissing / carVideoInfoInstalled / carVideoInfoOutdated. \"Video\" is the label of the second app icon in the car; \"Unknown sources\" is an Android Auto developer setting name",
     "placeholders": {
@@ -1803,7 +1803,7 @@
       }
     }
   },
-  "carVideoNeedsPermission": "To install the add-on, OpenIPTV needs permission to install apps.\n\nSelect Open Settings, turn on \"Allow from this source\", then come back here — the install will continue automatically.",
+  "carVideoNeedsPermission": "To install the add-on, VedooTV needs permission to install apps.\n\nSelect Open Settings, turn on \"Allow from this source\", then come back here — the install will continue automatically.",
   "@carVideoNeedsPermission": {
     "description": "Dialog body asking for the install-apps permission. \"Allow from this source\" is an Android system switch"
   },
@@ -1824,7 +1824,7 @@
   "@carVideoHandedOff": {
     "description": "Dialog body after handing the APK to the system installer"
   },
-  "carVideoUnavailable": "The add-on isn't available to download yet. It comes with the next OpenIPTV release.",
+  "carVideoUnavailable": "The add-on isn't available to download yet. It comes with the next VedooTV release.",
   "@carVideoUnavailable": {
     "description": "Dialog body when no add-on file exists"
   },
@@ -2342,13 +2342,13 @@
   "@powerUserConnect": {
     "description": "Button"
   },
-  "powerUserRouteApp": "Only OpenIPTV",
+  "powerUserRouteApp": "Only VedooTV",
   "@powerUserRouteApp": {
     "description": "VPN route option"
   },
   "powerUserRouteAppHint": "Other apps keep your normal connection",
   "@powerUserRouteAppHint": {
-    "description": "Explains the Only OpenIPTV route"
+    "description": "Explains the Only VedooTV route"
   },
   "powerUserRouteDevice": "Whole device",
   "@powerUserRouteDevice": {
@@ -2362,7 +2362,7 @@
   "@powerUserReconnectToApply": {
     "description": "Snackbar after changing the route while connected"
   },
-  "powerUserAutoConnect": "Connect when OpenIPTV opens",
+  "powerUserAutoConnect": "Connect when VedooTV opens",
   "@powerUserAutoConnect": {
     "description": "Switch title"
   },
@@ -2573,15 +2573,15 @@
   "@powerUserDbTurnOn": {
     "description": "Dialog button that turns encryption back on"
   },
-  "powerUserDbReopenTitle": "Reopen OpenIPTV to finish",
+  "powerUserDbReopenTitle": "Reopen VedooTV to finish",
   "@powerUserDbReopenTitle": {
     "description": "Dialog title"
   },
-  "powerUserDbReopenBody": "The database encryption mode has changed. OpenIPTV will close now. Open it again to apply the change.",
+  "powerUserDbReopenBody": "The database encryption mode has changed. VedooTV will close now. Open it again to apply the change.",
   "@powerUserDbReopenBody": {
     "description": "Dialog body"
   },
-  "powerUserDbClose": "Close OpenIPTV",
+  "powerUserDbClose": "Close VedooTV",
   "@powerUserDbClose": {
     "description": "Dialog button"
   },
@@ -2649,7 +2649,7 @@
   "@powerUserTunnelingAuto": {
     "description": "Option description"
   },
-  "powerUserTunnelingOn": "Experimental, live channels only. If it stalls or shows a black picture, OpenIPTV switches it off by itself; you can also turn it off here.",
+  "powerUserTunnelingOn": "Experimental, live channels only. If it stalls or shows a black picture, VedooTV switches it off by itself; you can also turn it off here.",
   "@powerUserTunnelingOn": {
     "description": "Option description"
   },
@@ -2673,11 +2673,11 @@
   "@powerUserRestartTitle": {
     "description": "Dialog title"
   },
-  "powerUserRestartLayerBody": "OpenIPTV needs to restart to change how it shows the picture. Anything playing will stop.",
+  "powerUserRestartLayerBody": "VedooTV needs to restart to change how it shows the picture. Anything playing will stop.",
   "@powerUserRestartLayerBody": {
     "description": "Dialog body"
   },
-  "powerUserRestartGraphicsBody": "OpenIPTV needs to restart to change how it draws the screen. Anything playing will stop.",
+  "powerUserRestartGraphicsBody": "VedooTV needs to restart to change how it draws the screen. Anything playing will stop.",
   "@powerUserRestartGraphicsBody": {
     "description": "Dialog body"
   },
@@ -2689,7 +2689,7 @@
   "@powerUserRestartNow": {
     "description": "Dialog button"
   },
-  "powerUserRestartFailed": "Couldn't restart. Close and open OpenIPTV to apply it.",
+  "powerUserRestartFailed": "Couldn't restart. Close and open VedooTV to apply it.",
   "@powerUserRestartFailed": {
     "description": "Snackbar"
   },
@@ -2697,7 +2697,7 @@
   "@powerUserGraphicsTitle": {
     "description": "Group heading"
   },
-  "powerUserGraphicsDescription": "How OpenIPTV draws the screen and the video. If the picture looks torn (a line across it) or jittery on fast motion, try Compatible. Takes effect when the app restarts.",
+  "powerUserGraphicsDescription": "How VedooTV draws the screen and the video. If the picture looks torn (a line across it) or jittery on fast motion, try Compatible. Takes effect when the app restarts.",
   "@powerUserGraphicsDescription": {
     "description": "Group description. \"Compatible\" is the option graphicsModeCompatibleLabel"
   },
@@ -2718,7 +2718,7 @@
   "@powerUserUaTitle": {
     "description": "Group heading, dialog title and field label. A user agent is the name a program sends to a server to identify itself"
   },
-  "powerUserUaDescription": "How the player introduces itself to your provider. OpenIPTV sends its own name, version and device. Change it only if your provider asks for a particular one. Each extra channel in multi-view adds its own tag on the end, so your provider can tell them apart. Applies from the next channel you open.",
+  "powerUserUaDescription": "How the player introduces itself to your provider. VedooTV sends its own name, version and device. Change it only if your provider asks for a particular one. Each extra channel in multi-view adds its own tag on the end, so your provider can tell them apart. Applies from the next channel you open.",
   "@powerUserUaDescription": {
     "description": "Group description"
   },
@@ -2726,11 +2726,11 @@
   "@powerUserUaRow": {
     "description": "Row title"
   },
-  "powerUserUaDefault": "OpenIPTV (default)",
+  "powerUserUaDefault": "VedooTV (default)",
   "@powerUserUaDefault": {
     "description": "Row value when no custom user agent is set"
   },
-  "powerUserUaEmptyNote": "Leave it empty to use OpenIPTV's own.",
+  "powerUserUaEmptyNote": "Leave it empty to use VedooTV's own.",
   "@powerUserUaEmptyNote": {
     "description": "Note in the user agent dialog"
   },
@@ -2864,7 +2864,7 @@
   "@extraGuidesFillTitle": {
     "description": "Group heading on the Extra Guides page"
   },
-  "extraGuidesFillDescription": "Your playlist's own TV guide is always used first. A channel it does not cover is matched by name to the guides you add here. You can also pick a guide for any channel yourself: hold OK (or long-press) a channel → Change Guide.\n\nWorks with .xml, .xml.gz and zipped guides, as long as they unpack to XML. OpenIPTV does not provide guides, but community sites publish them: a web search for \"XMLTV EPG\" is a good place to start. 😉",
+  "extraGuidesFillDescription": "Your playlist's own TV guide is always used first. A channel it does not cover is matched by name to the guides you add here. You can also pick a guide for any channel yourself: hold OK (or long-press) a channel → Change Guide.\n\nWorks with .xml, .xml.gz and zipped guides, as long as they unpack to XML. VedooTV does not provide guides, but community sites publish them: a web search for \"XMLTV EPG\" is a good place to start. 😉",
   "@extraGuidesFillDescription": {
     "description": "Explanatory paragraph at the top of Extra Guides. \"Change Guide\" is the menu item changeGuideTitle. The wink emoji is intentional (hint, not a recommendation); keep the search phrase \"XMLTV EPG\" untranslated"
   },
@@ -3007,7 +3007,7 @@
   "@extraGuidesLinksTitle": {
     "description": "App bar title of the list of channels matched to guides"
   },
-  "extraGuidesLinksEmpty": "No channels are matched to an extra guide yet. Pick one for a channel with hold OK → Change Guide, or add a guide and let OpenIPTV match channels for you.",
+  "extraGuidesLinksEmpty": "No channels are matched to an extra guide yet. Pick one for a channel with hold OK → Change Guide, or add a guide and let VedooTV match channels for you.",
   "@extraGuidesLinksEmpty": {
     "description": "Empty state of the Guide Matches list. Change Guide = changeGuideTitle"
   },
@@ -3368,7 +3368,7 @@
       }
     }
   },
-  "backupShareSubject": "OpenIPTV backup",
+  "backupShareSubject": "VedooTV backup",
   "@backupShareSubject": {
     "description": "Subject line of the share sheet / email when sharing the backup file"
   },
@@ -3430,7 +3430,7 @@
   "@backupPickerFailed": {
     "description": "Error snackbar"
   },
-  "backupOpenFailed": "Couldn't open this backup file. Make sure it's a valid OpenIPTV backup.",
+  "backupOpenFailed": "Couldn't open this backup file. Make sure it's a valid VedooTV backup.",
   "@backupOpenFailed": {
     "description": "Error snackbar"
   },
@@ -3516,7 +3516,7 @@
       }
     }
   },
-  "updatePermissionBody": "To install updates, OpenIPTV needs permission to install apps.\n\nSelect Open Settings, turn on \"Allow from this source\", then come back here — the update will continue automatically.",
+  "updatePermissionBody": "To install updates, VedooTV needs permission to install apps.\n\nSelect Open Settings, turn on \"Allow from this source\", then come back here — the update will continue automatically.",
   "@updatePermissionBody": {
     "description": "Dialog body. Open Settings = updateOpenSettings; \"Allow from this source\" is Android's own switch label (use the Spanish Android wording)"
   },
@@ -3533,7 +3533,7 @@
       }
     }
   },
-  "updateHandedOffBody": "Follow the prompts on screen to finish installing. OpenIPTV will restart on the new version.\n\nIf nothing appeared, or you cancelled, select Install again.",
+  "updateHandedOffBody": "Follow the prompts on screen to finish installing. VedooTV will restart on the new version.\n\nIf nothing appeared, or you cancelled, select Install again.",
   "@updateHandedOffBody": {
     "description": "Dialog body. Install again = updateInstallAgain"
   },
@@ -3621,7 +3621,7 @@
   "@reportsCheckCodeHeading": {
     "description": "Heading"
   },
-  "reportsCheckCodeBody": "All of it lives in lib/telemetry/ in the OpenIPTV GitHub repository, with a short design note in docs/design/anonymous-stats.md.",
+  "reportsCheckCodeBody": "All of it lives in lib/telemetry/ in the VedooTV GitHub repository, with a short design note in docs/design/anonymous-stats.md.",
   "@reportsCheckCodeBody": {
     "description": "Body; keep file paths as is"
   },
@@ -4208,7 +4208,7 @@
   "@playerLangRo": {
     "description": "Name of a language, shown as the name of an audio or subtitle track"
   },
-  "carLibrarySetup": "Open OpenIPTV on your phone to get started",
+  "carLibrarySetup": "Open VedooTV on your phone to get started",
   "@carLibrarySetup": {
     "description": "Message shown in the car (Android Auto) when the app has not been set up on the phone yet"
   },
