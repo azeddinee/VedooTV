@@ -28,7 +28,11 @@
   "@wizardChooseFileFirst": {
     "description": "Error shown when the user taps Load My Playlist without having picked a file"
   },
-  "wizardFieldServerAddress": "the server address",
+  "wizardFieldUniqueCode": "the unique code",
+  "wizardInvalidUniqueCode": "Enter a valid code using only letters, numbers, and hyphens.",
+  "wizardUniqueCodeLabel": "Unique Code",
+  "wizardUniqueCodeHint": "Enter the unique code from your provider",
+  "wizardAddPlaylistTitle": "Add Your Playlist",
   "@wizardFieldServerAddress": {
     "description": "Missing-field noun phrase inserted into wizardEnterMissing. Include the article so the sentence reads naturally"
   },
@@ -217,7 +221,7 @@
   "@wizardTypeFileDesc": {
     "description": "Card description for the playlist file option"
   },
-  "wizardCredsTitleXtream": "Xtream Credentials",
+  "wizardCredsTitleXtream": "Add Your Playlist",
   "@wizardCredsTitleXtream": {
     "description": "Page title for entering Xtream login details"
   },
