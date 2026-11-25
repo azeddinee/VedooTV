@@ -225,7 +225,7 @@
   "@wizardCredsTitleXtream": {
     "description": "Page title for entering Xtream login details"
   },
-  "wizardCredsSubXtream": "Enter the login details from your provider.",
+  "wizardCredsSubXtream": "Enter your login details.",
   "@wizardCredsSubXtream": {
     "description": "Subtitle under the Xtream page title"
   },
@@ -265,7 +265,7 @@
   "@wizardUsernameLabel": {
     "description": "Field label"
   },
-  "wizardUsernameHint": "your_username",
+  "wizardUsernameHint": "Your username",
   "@wizardUsernameHint": {
     "description": "Example hint, written like an identifier (underscores)"
   },
@@ -273,7 +273,7 @@
   "@wizardPasswordLabel": {
     "description": "Field label"
   },
-  "wizardPasswordHint": "your_password",
+  "wizardPasswordHint": "Your password",
   "@wizardPasswordHint": {
     "description": "Example hint, written like an identifier (underscores)"
   },
