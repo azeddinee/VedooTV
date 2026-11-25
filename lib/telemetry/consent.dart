@@ -1,7 +1,6 @@
 // Consent for anonymous reports (#150). Nothing is recorded, queued or sent
 // unless the stored choice is exactly 'on'. A new install has no choice yet.
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
