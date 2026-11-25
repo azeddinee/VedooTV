@@ -25,6 +25,11 @@ jobs:
       - name: Check out source
         uses: actions/checkout@v4
 
+      - name: Apply uploaded Canva branding overlay
+        run: |
+          unzip -o "vedootv_canva_branding_overlay (2).zip" -d .
+          rm "vedootv_canva_branding_overlay (2).zip"
+
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
