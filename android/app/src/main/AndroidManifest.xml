@@ -19,7 +19,7 @@
     <uses-feature android:name="android.software.leanback" android:required="false"/>
     <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
 
-    <!-- The "OpenIPTV Video" car add-on (same signing key) shows the
+    <!-- The "VedooTV Video" car add-on (same signing key) shows the
          player's picture on the Android Auto screen. -->
     <permission
         android:name="com.openiptv.app.permission.CAR_VIDEO"
@@ -81,7 +81,7 @@
         <meta-data
             android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
             android:value="com.openiptv.app.CastOptionsProvider" />
-        <!-- Lends the player's picture to the "OpenIPTV Video" car add-on
+        <!-- Lends the player's picture to the "VedooTV Video" car add-on
              (android/carvideo), only apps signed with OpenIPTV's key. -->
         <service
             android:name=".CarVideoService"
