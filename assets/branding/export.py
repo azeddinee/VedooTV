@@ -1,6 +1,6 @@
 """Exports the VedooTV brand PNGs from assets/branding/*.svg.
 
-Needs Firefox (rendered headless), Pillow and numpy. Transparent artwork is
+Needs librsvg (rsvg-convert), Pillow and numpy. Transparent artwork is
 rendered on black and on white and un-composited to recover alpha.
 
     python3 assets/branding/export.py
@@ -25,12 +25,12 @@ def svg_src(name, scale=1.0):
         s=head+'>'+rest[:defs_end]+t+'</svg>'
     return s
 def shoot(svg, w, h, bg):
-    svg_open = f'<svg style="display:block;width:{w}px;height:{h}px" '
-    html = f'<html><body style="margin:0;background:{bg}">{svg.replace("<svg ", svg_open, 1)}</body></html>'
-    p=f'{TMP}/p.html'; open(p,'w').write(html); out=f'{TMP}/o.png'
+    source=f'{TMP}/source.svg'; out=f'{TMP}/o.png'
+    open(source,'w').write(svg)
     if os.path.exists(out): os.remove(out)
-    subprocess.run(['firefox','--headless','--no-remote','--profile',PROF,'--screenshot',out,f'--window-size={w},{h}',f'file://{p}'],
-                   env={**os.environ,'MOZ_HEADLESS':'1'},stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,timeout=120)
+    subprocess.run(['rsvg-convert','--width',str(w),'--height',str(h),
+                    '--background-color',bg,'--output',out,source],
+                   check=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,timeout=120)
     return np.asarray(Image.open(out).convert('RGB'),dtype=np.float64)[:h,:w]
 def render(name, w, h, transparent, scale=1.0):
     svg=svg_src(name, scale)
