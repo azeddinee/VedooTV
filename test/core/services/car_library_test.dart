@@ -90,7 +90,7 @@ void main() {
       loadProfile: () async => null,
     );
     final items = await lib.children('root');
-    expect(items.single.title, contains('Open OpenIPTV on your phone'));
+    expect(items.single.title, contains('Open VedooTV on your phone'));
   });
 
   test('Kids profiles never see adult categories or channels', () async {
