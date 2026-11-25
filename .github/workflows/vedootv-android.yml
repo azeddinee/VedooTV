@@ -41,14 +41,15 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y firefox
-          python3 -m pip install --user --upgrade Pillow numpy
+          python3 -m venv .venv-branding
+          .venv-branding/bin/python -m pip install --upgrade Pillow numpy
 
       - name: Resolve Flutter dependencies
         run: flutter pub get
 
       - name: Generate VedooTV raster branding
         run: |
-          python3 assets/branding/export.py
+          .venv-branding/bin/python assets/branding/export.py
           dart run flutter_launcher_icons
           dart run flutter_native_splash:create
 
