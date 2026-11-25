@@ -26,10 +26,14 @@ class BrandSplash extends StatelessWidget {
           ),
           Positioned(
             bottom: 48,
-            child: Image(
-              image: AssetImage('assets/images/wordmark.png'),
-              width: 200,
-              height: 50,
+            child: Text(
+              'VedooTV',
+              style: TextStyle(
+                color: Color(0xFFFFFFFF),
+                fontSize: 25,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 1.2,
+              ),
             ),
           ),
         ],
