@@ -1,4 +1,4 @@
-# OpenIPTV brand
+# VedooTV brand
 
 Source artwork for the app icon, splash screen, Android TV banner and in-app
 logo ("Open Ring": a gradient ring left open at the top — the O of Open —
