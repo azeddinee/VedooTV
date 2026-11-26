@@ -81,7 +81,7 @@ void main() {
                 child: const Text('open'))));
     await tester.tap(find.text('open'));
     await tester.pumpAndSettle();
-    expect(find.text('Help improve OpenIPTV?'), findsOneWidget);
+    expect(find.text('Help improve VedooTV?'), findsOneWidget);
     expect(find.text('No Thanks'), findsOneWidget);
     expect(find.text('Turn On'), findsOneWidget);
     expect(tester.takeException(), isNull);

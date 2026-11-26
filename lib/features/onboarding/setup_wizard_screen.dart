@@ -12,12 +12,10 @@ import 'package:open_iptv/core/providers/theme_providers.dart';
 import 'package:open_iptv/core/services/profile_service.dart';
 import 'package:open_iptv/core/services/source_manager.dart';
 import 'package:open_iptv/core/services/tv_text_input.dart';
-import 'package:open_iptv/core/storage/local_playlists.dart';
 import 'package:open_iptv/core/storage/preferences.dart';
 import 'package:open_iptv/features/settings/backup_screen.dart';
 import 'package:open_iptv/shared/theme/app_theme.dart';
 import 'package:open_iptv/shared/utils/friendly_error.dart';
-import 'package:open_iptv/shared/widgets/device_file_picker.dart';
 import 'package:open_iptv/shared/widgets/pin_field.dart';
 import 'package:open_iptv/shared/widgets/tv_focusable.dart';
 import 'package:open_iptv/shared/widgets/language_picker.dart';
@@ -51,9 +49,8 @@ class SetupWizardScreen extends ConsumerStatefulWidget {
 
 class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen>
     with TickerProviderStateMixin {
-  // Playlist-only mode starts straight at the playlist-type page; the
-  // profile pages before it are never shown.
-  static const _playlistTypePage = 3;
+  // Playlist-only mode starts directly at the Xtream credentials page.
+  static const _credentialsPage = 4;
   late final _pageController = PageController(initialPage: _firstPage);
 
   // Native Back. On a first run the wizard is the root route, with no shell
@@ -63,7 +60,7 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen>
   // alive underneath and already forwards Back to the route's PopScope.
   static const _backChannel = MethodChannel('openiptv/back');
 
-  int get _firstPage => widget.addPlaylistOnly ? _playlistTypePage : 0;
+  int get _firstPage => widget.addPlaylistOnly ? _credentialsPage : 0;
 
   // The page being shown — Back steps through these before leaving.
   late int _page = _firstPage;
@@ -79,25 +76,16 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen>
   // whichever page happened to build first).
   final _startFocusNode = FocusNode();
   final _pin1FocusNode = FocusNode();
-  final _xtreamCardFocusNode = FocusNode();
-  final _nicknameFocusNode = FocusNode();
+  final _codeFocusNode = FocusNode();
   String _avatarEmoji = '🧑';
   Color _accentColor = AppTheme.defaultAccent;
   String _pin = '';
 
-  // Source state
-  SourceType _playlistType = SourceType.xtream;
-  // "Playlist File": an M3U picked from the device instead of a URL.
-  bool _fromFile = false;
-  String? _pickedFileName;
-  String? _pickedFileContent;
-  final _nicknameCtrl = TextEditingController();
-  final _xtreamHostCtrl = TextEditingController();
+  // Xtream login details. The app builds the server URL from the customer's code.
+  final _xtreamCodeCtrl = TextEditingController();
   final _xtreamUserCtrl = TextEditingController();
   final _xtreamPassCtrl = TextEditingController();
   bool _passVisible = false;
-  final _m3uUrlCtrl = TextEditingController();
-  final _epgUrlCtrl = TextEditingController();
 
   // Loading / all-set state
   bool _isLoading = false;
@@ -142,7 +130,7 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen>
       // starting point on the first page shown.
       _accentColor = ref.read(accentColorProvider);
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) _xtreamCardFocusNode.requestFocus();
+        if (mounted) _codeFocusNode.requestFocus();
       });
     }
 
@@ -187,14 +175,10 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen>
     _nameFocusNode.dispose();
     _startFocusNode.dispose();
     _pin1FocusNode.dispose();
-    _xtreamCardFocusNode.dispose();
-    _nicknameFocusNode.dispose();
-    _nicknameCtrl.dispose();
-    _xtreamHostCtrl.dispose();
+    _codeFocusNode.dispose();
+    _xtreamCodeCtrl.dispose();
     _xtreamUserCtrl.dispose();
     _xtreamPassCtrl.dispose();
-    _m3uUrlCtrl.dispose();
-    _epgUrlCtrl.dispose();
     super.dispose();
   }
 
@@ -223,8 +207,7 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen>
       0 => _startFocusNode,
       1 => _nameFocusNode,
       2 => _pin1FocusNode,
-      3 => _xtreamCardFocusNode,
-      4 => _nicknameFocusNode,
+      4 => _codeFocusNode,
       _ => null,
     };
     if (requestFocus && focusNode != null) {
@@ -242,61 +225,16 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen>
     }
   }
 
-  Future<void> _pickPlaylistFile() async {
-    FocusScope.of(context).unfocus();
-    PickedDeviceFile? file;
-    try {
-      // Any type in the system picker: Android has no reliable MIME type for
-      // .m3u/.m3u8, so a filter hides real playlists. Contents are checked.
-      file = await pickDeviceFile(context,
-          title: AppLocalizations.of(context).wizardPickFileTitle,
-          extensions: const ['.m3u', '.m3u8', '.txt']);
-    } catch (_) {
-      if (mounted) {
-        setState(() => _errorMessage =
-            AppLocalizations.of(context).wizardFilePickerFailed);
-      }
-      return;
-    }
-    final picked = file;
-    if (picked == null || !mounted) return;
-    try {
-      final content = LocalPlaylists.decode(picked.bytes);
-      setState(() {
-        _pickedFileName = picked.name;
-        _pickedFileContent = content;
-        _errorMessage = null;
-      });
-    } on LocalPlaylistException catch (e) {
-      setState(() {
-        _pickedFileName = null;
-        _pickedFileContent = null;
-        _errorMessage =
-            friendlySourceErrorMessage(e, AppLocalizations.of(context));
-      });
-    }
-  }
-
   Future<void> _submitSource() async {
     final l10n = AppLocalizations.of(context);
     FocusScope.of(context).unfocus();
-    if (_fromFile && _pickedFileContent == null) {
-      setState(() => _errorMessage = l10n.wizardChooseFileFirst);
-      return;
-    }
-    // Say what's missing rather than trying to connect with blanks and
-    // failing with a vague error.
-    final missing = _playlistType == SourceType.xtream
-        ? [
-            if (_xtreamHostCtrl.text.trim().isEmpty)
-              l10n.wizardFieldServerAddress,
-            if (_xtreamUserCtrl.text.trim().isEmpty) l10n.wizardFieldUsername,
-            if (_xtreamPassCtrl.text.trim().isEmpty) l10n.wizardFieldPassword,
-          ]
-        : [
-            if (!_fromFile && _m3uUrlCtrl.text.trim().isEmpty)
-              l10n.wizardFieldM3uUrl
-          ];
+
+    final code = _xtreamCodeCtrl.text.trim().toLowerCase();
+    final missing = [
+      if (code.isEmpty) l10n.wizardFieldUniqueCode,
+      if (_xtreamUserCtrl.text.trim().isEmpty) l10n.wizardFieldUsername,
+      if (_xtreamPassCtrl.text.trim().isEmpty) l10n.wizardFieldPassword,
+    ];
     if (missing.isNotEmpty) {
       final list = missing.length == 1
           ? missing.first
@@ -306,6 +244,12 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen>
       setState(() => _errorMessage = l10n.wizardEnterMissing(list));
       return;
     }
+    // A customer code must be a single DNS label, not a URL or hostname.
+    if (!RegExp(r'^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$').hasMatch(code)) {
+      setState(() => _errorMessage = l10n.wizardInvalidUniqueCode);
+      return;
+    }
+
     setState(() {
       _isLoading = true;
       _errorMessage = null;
@@ -315,32 +259,17 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen>
 
     try {
       final manager = ref.read(sourceManagerProvider);
-      var nickname = _nicknameCtrl.text.trim();
-      if (nickname.isEmpty && _fromFile) {
-        nickname = _pickedFileName!.replaceAll(RegExp(r'\.m3u8?$',
-            caseSensitive: false), '');
-      }
-      final epgUrl = _epgUrlCtrl.text.trim().isEmpty
-          ? null
-          : _epgUrlCtrl.text.trim();
-
+      final host = 'http://$code.tvway.pro';
       void onProgress(String msg) {
         if (mounted) setState(() => _progressMessage = msg);
       }
 
-      // Add the playlist first — it's the step most likely to fail (bad
-      // credentials, bad URL, network issues). Only create the profile once
-      // it succeeds, so a failed attempt leaves nothing behind to retry into.
-      final isM3u = _playlistType == SourceType.m3u;
       await manager.addSource(
-        nickname: nickname,
-        type: _playlistType,
-        m3uUrl: isM3u && !_fromFile ? _m3uUrlCtrl.text.trim() : null,
-        m3uFileContent: isM3u && _fromFile ? _pickedFileContent : null,
-        xtreamHost: isM3u ? null : _xtreamHostCtrl.text.trim(),
-        xtreamUsername: isM3u ? null : _xtreamUserCtrl.text.trim(),
-        xtreamPassword: isM3u ? null : _xtreamPassCtrl.text.trim(),
-        epgUrl: epgUrl,
+        nickname: 'VedooTV',
+        type: SourceType.xtream,
+        xtreamHost: host,
+        xtreamUsername: _xtreamUserCtrl.text.trim(),
+        xtreamPassword: _xtreamPassCtrl.text.trim(),
         onProgress: onProgress,
       );
 
@@ -350,20 +279,15 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen>
         final prefs = await ref.read(appPreferencesProvider.future);
         final db = ref.read(appDatabaseProvider);
         final profileSvc = ProfileService(db: db, prefsSnapshot: prefs);
-        final profile = await profileSvc.createProfile(
+        await profileSvc.createProfile(
           name: _nameCtrl.text.trim(),
           avatarEmoji: _avatarEmoji,
           pin: _pin.isEmpty ? null : _pin,
           isAdmin: true,
           accentColor: AppTheme.hexFromAccent(_accentColor),
         );
-
-        // The active profile was cached as "none" before this one existed;
-        // refresh it so Settings shows the profile without an app restart.
         ref.invalidate(activeProfileProvider);
         ref.invalidate(allProfilesProvider);
-
-        // Persist and apply the chosen accent colour immediately.
         await prefs.setAccentColor(AppTheme.hexFromAccent(_accentColor));
         ref.read(accentColorProvider.notifier).state = _accentColor;
       }
@@ -371,8 +295,6 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen>
       if (!mounted) return;
       ref.invalidate(allSourcesProvider);
 
-      // New installs are asked once, here (#150). Playlist-only mode is an
-      // existing install and is asked from the main screen instead.
       if (!widget.addPlaylistOnly) {
         await askStatsConsentOnce(context, ProviderScope.containerOf(context));
         if (!mounted) return;
@@ -386,13 +308,10 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen>
       if (!mounted) return;
       setState(() {
         _isLoading = false;
-        _errorMessage =
-            friendlySourceErrorMessage(e, AppLocalizations.of(context));
+        _errorMessage = friendlySourceErrorMessage(e, l10n);
       });
-      // On touch devices, refocusing the nickname field would pop the
-      // keyboard straight back up over the error; TV still needs a D-pad
-      // starting point.
-      _goToPage(4, requestFocus: PlatformHelper.isTV(context));
+      _goToPage(_credentialsPage,
+          requestFocus: PlatformHelper.isTV(context));
     }
   }
 
@@ -469,8 +388,7 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen>
   Widget build(BuildContext context) {
     final addOnly = widget.addPlaylistOnly;
     // Step dots count only the pages this mode actually shows.
-    final stepOffset = addOnly ? _playlistTypePage - 1 : 0;
-    final totalSteps = addOnly ? 2 : 4;
+    final totalSteps = addOnly ? 1 : 3;
     // Back (remote, gesture, system button) goes one step back, like the
     // on-screen arrow; only from the first page does it leave the wizard.
     // Nothing happens while a playlist loads (page 5).
@@ -521,59 +439,29 @@ class _SetupWizardScreenState extends ConsumerState<SetupWizardScreen>
             onBack: () => _goToPage(1),
             onSkip: () {
               setState(() => _pin = '');
-              _goToPage(3);
+              _goToPage(_credentialsPage);
             },
             onPinSet: (pin) {
               setState(() => _pin = pin);
-              _goToPage(3);
+              _goToPage(_credentialsPage);
             },
           ),
           ],
-          _PlaylistTypePage(
-            accentColor: _accentColor,
-            firstCardFocusNode: _xtreamCardFocusNode,
-            step: 2 - stepOffset,
-            totalSteps: totalSteps,
-            addingPlaylist: addOnly,
-            onBack: addOnly
-                ? (context.canPop() ? () => context.pop() : null)
-                : () => _goToPage(2),
-            onSelected: (type) {
-              setState(() {
-                _playlistType = type;
-                _fromFile = false;
-                _errorMessage = null;
-              });
-              _goToPage(4);
-            },
-            onFileSelected: () {
-              setState(() {
-                _playlistType = SourceType.m3u;
-                _fromFile = true;
-                _errorMessage = null;
-              });
-              _goToPage(4);
-            },
-          ),
+          const SizedBox.shrink(), // Keep the credentials page at its stable index.
           _CredentialsPage(
             accentColor: _accentColor,
-            playlistType: _playlistType,
-            fromFile: _fromFile,
-            pickedFileName: _pickedFileName,
-            onPickFile: _pickPlaylistFile,
-            nicknameCtrl: _nicknameCtrl,
-            nicknameFocusNode: _nicknameFocusNode,
-            xtreamHostCtrl: _xtreamHostCtrl,
+            uniqueCodeCtrl: _xtreamCodeCtrl,
+            codeFocusNode: _codeFocusNode,
             xtreamUserCtrl: _xtreamUserCtrl,
             xtreamPassCtrl: _xtreamPassCtrl,
             passVisible: _passVisible,
             onTogglePass: () => setState(() => _passVisible = !_passVisible),
-            m3uUrlCtrl: _m3uUrlCtrl,
-            epgUrlCtrl: _epgUrlCtrl,
             errorMessage: _errorMessage,
-            step: 3 - stepOffset,
+            step: addOnly ? 1 : 2,
             totalSteps: totalSteps,
-            onBack: () => _goToPage(3),
+            onBack: addOnly
+                ? (context.canPop() ? () => context.pop() : null)
+                : () => _goToPage(2),
             onSubmit: _isLoading ? null : _submitSource,
           ),
           _LoadingPage(
@@ -891,7 +779,7 @@ class _NamePage extends StatelessWidget {
     return _WizardFrame(
       accentColor: selectedColor,
       step: 0,
-      totalSteps: 4,
+      totalSteps: 3,
       onBack: onBack,
       title: l10n.wizardNameTitle,
       subtitle: l10n.wizardPrivacyNote,
@@ -1068,7 +956,7 @@ class _PinPageState extends State<_PinPage> {
     return _WizardFrame(
       accentColor: widget.accentColor,
       step: 1,
-      totalSteps: 4,
+      totalSteps: 3,
       onBack: widget.onBack,
       title: l10n.wizardPinTitle,
       subtitle: l10n.wizardPinBody,
@@ -1118,352 +1006,86 @@ class _PinPageState extends State<_PinPage> {
 }
 
 // ---------------------------------------------------------------------------
-// Page 3 — Playlist type selector
-// ---------------------------------------------------------------------------
-
-class _PlaylistTypePage extends StatelessWidget {
-  const _PlaylistTypePage({
-    required this.accentColor,
-    required this.onSelected,
-    required this.firstCardFocusNode,
-    required this.step,
-    required this.totalSteps,
-    required this.onFileSelected,
-    this.addingPlaylist = false,
-    this.onBack,
-  });
-  final Color accentColor;
-  final ValueChanged<SourceType> onSelected;
-  final VoidCallback onFileSelected;
-  final FocusNode firstCardFocusNode;
-  final int step;
-  final int totalSteps;
-  final bool addingPlaylist;
-  final VoidCallback? onBack;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    final gap = PlatformHelper.isTV(context) ? 12.0 : 16.0;
-    return _WizardFrame(
-      accentColor: accentColor,
-      step: step,
-      totalSteps: totalSteps,
-      onBack: onBack,
-      title: addingPlaylist ? l10n.wizardTypeTitleAdd : l10n.wizardTypeTitleHave,
-      subtitle: l10n.wizardTypeHelp,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _PlaylistTypeCard(
-            icon: Icons.dns_rounded,
-            title: l10n.wizardTypeXtreamTitle,
-            description: l10n.wizardTypeXtreamDesc,
-            accentColor: accentColor,
-            onTap: () => onSelected(SourceType.xtream),
-            focusNode: firstCardFocusNode,
-          ),
-          SizedBox(height: gap),
-          _PlaylistTypeCard(
-            icon: Icons.link_rounded,
-            title: l10n.wizardTypeM3uTitle,
-            description: l10n.wizardTypeM3uDesc,
-            accentColor: accentColor,
-            onTap: () => onSelected(SourceType.m3u),
-          ),
-          SizedBox(height: gap),
-          _PlaylistTypeCard(
-            icon: Icons.upload_file_rounded,
-            title: l10n.wizardTypeFileTitle,
-            description: l10n.wizardTypeFileDesc,
-            accentColor: accentColor,
-            onTap: onFileSelected,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _PlaylistTypeCard extends StatefulWidget {
-  const _PlaylistTypeCard({
-    required this.icon,
-    required this.title,
-    required this.description,
-    required this.accentColor,
-    required this.onTap,
-    this.focusNode,
-  });
-
-  final IconData icon;
-  final String title;
-  final String description;
-  final Color accentColor;
-  final VoidCallback onTap;
-  // See TvFocusable.focusNode's doc — plain autofocus isn't reliable here
-  // since this card lives inside a wizard PageView page that's built up
-  // front, long before it's actually shown.
-  final FocusNode? focusNode;
-
-  @override
-  State<_PlaylistTypeCard> createState() => _PlaylistTypeCardState();
-}
-
-class _PlaylistTypeCardState extends State<_PlaylistTypeCard>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _pressCtrl;
-
-  @override
-  void initState() {
-    super.initState();
-    _pressCtrl = AnimationController(
-      vsync: this,
-      duration: motionDuration(const Duration(milliseconds: 150)),
-      lowerBound: 0.96,
-      upperBound: 1.0,
-      value: 1.0,
-    );
-  }
-
-  @override
-  void dispose() {
-    _pressCtrl.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final tv = PlatformHelper.isTV(context);
-    final badge = tv ? 48.0 : 56.0;
-    // Only scrolls when a card is cut off (centring it pushed the page's
-    // back arrow off the top of the screen).
-    return TvRevealOnFocus(
-      child: TvFocusable(
-        wrapsGesture: false,
-        focusNode: widget.focusNode,
-        borderRadius: BorderRadius.circular(16),
-        onTap: widget.onTap,
-        child: GestureDetector(
-          onTapDown: (_) => _pressCtrl.reverse(),
-          onTapUp: (_) {
-            _pressCtrl.forward();
-            widget.onTap();
-          },
-          onTapCancel: () => _pressCtrl.forward(),
-          child: AnimatedBuilder(
-            animation: _pressCtrl,
-            builder: (_, child) =>
-                Transform.scale(scale: _pressCtrl.value, child: child),
-            child: Container(
-              padding: EdgeInsets.all(tv ? 14 : 18),
-              decoration: BoxDecoration(
-                color: AppTheme.surfaceColor,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppTheme.outlineColor),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    width: badge,
-                    height: badge,
-                    decoration: BoxDecoration(
-                      color: widget.accentColor.withValues(alpha: 0.16),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(widget.icon,
-                        color: widget.accentColor, size: badge / 2),
-                  ),
-                  const SizedBox(width: 18),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.title,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: tv ? 20 : 19,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SizedBox(height: 3),
-                        Text(
-                          widget.description,
-                          style: TextStyle(
-                            color: AppTheme.mutedTextColor,
-                            fontSize: tv ? 15 : 13,
-                            height: 1.35,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  const Icon(Icons.chevron_right,
-                      color: AppTheme.mutedTextColor, size: 24),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Page 4 — Credentials form
+// Page 4 — VedooTV playlist credentials
 // ---------------------------------------------------------------------------
 
 class _CredentialsPage extends StatelessWidget {
   const _CredentialsPage({
     required this.accentColor,
-    required this.playlistType,
-    required this.fromFile,
-    required this.pickedFileName,
-    required this.onPickFile,
-    required this.nicknameCtrl,
-    required this.xtreamHostCtrl,
+    required this.uniqueCodeCtrl,
+    required this.codeFocusNode,
     required this.xtreamUserCtrl,
     required this.xtreamPassCtrl,
     required this.passVisible,
     required this.onTogglePass,
-    required this.m3uUrlCtrl,
-    required this.epgUrlCtrl,
     required this.errorMessage,
     required this.step,
     required this.totalSteps,
     required this.onBack,
     required this.onSubmit,
-    required this.nicknameFocusNode,
   });
 
   final Color accentColor;
-  final SourceType playlistType;
-  final bool fromFile;
-  final String? pickedFileName;
-  final VoidCallback onPickFile;
-  final TextEditingController nicknameCtrl;
-  final FocusNode nicknameFocusNode;
-  final TextEditingController xtreamHostCtrl;
+  final TextEditingController uniqueCodeCtrl;
+  final FocusNode codeFocusNode;
   final TextEditingController xtreamUserCtrl;
   final TextEditingController xtreamPassCtrl;
   final bool passVisible;
   final VoidCallback onTogglePass;
-  final TextEditingController m3uUrlCtrl;
-  final TextEditingController epgUrlCtrl;
   final String? errorMessage;
   final int step;
   final int totalSteps;
-  final VoidCallback onBack;
+  final VoidCallback? onBack;
   final VoidCallback? onSubmit;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
-    final isXtream = playlistType == SourceType.xtream;
-
-    final nickname = _WizardField(
-      label: fromFile ? l10n.wizardNicknameOptional : l10n.wizardNickname,
-      ctrl: nicknameCtrl,
-      hint: fromFile
-          ? l10n.wizardNicknameHintFile
-          : l10n.wizardNicknameHintExample,
-      accentColor: accentColor,
-      focusNode: nicknameFocusNode,
-    );
-    final guide = _WizardField(
-      label: l10n.wizardGuideUrlLabel,
-      ctrl: epgUrlCtrl,
-      hint: l10n.wizardGuideUrlHint,
-      type: TextInputType.url,
-      accentColor: accentColor,
-    );
-
-    // On TV the short fields sit in pairs so the whole form fits on screen
-    // without scrolling; on a phone each is its own row.
-    final List<List<Widget>> rows = isXtream
-        ? [
-            [
-              nickname,
-              _WizardField(
-                label: l10n.wizardServerAddressLabel,
-                ctrl: xtreamHostCtrl,
-                hint: l10n.wizardServerAddressHint,
-                type: TextInputType.url,
-                accentColor: accentColor,
-              ),
-            ],
-            [
-              _WizardField(
-                label: l10n.wizardUsernameLabel,
-                ctrl: xtreamUserCtrl,
-                hint: l10n.wizardUsernameHint,
-                accentColor: accentColor,
-              ),
-              _WizardField(
-                label: l10n.wizardPasswordLabel,
-                ctrl: xtreamPassCtrl,
-                hint: l10n.wizardPasswordHint,
-                obscure: !passVisible,
-                accentColor: accentColor,
-                suffix: IconButton(
-                  icon: Icon(
-                    passVisible ? Icons.visibility_off : Icons.visibility,
-                    color: AppTheme.mutedTextColor,
-                  ),
-                  tooltip: passVisible
-                      ? l10n.wizardPasswordHide
-                      : l10n.wizardPasswordShow,
-                  onPressed: onTogglePass,
-                ),
-              ),
-            ],
-          ]
-        : fromFile
-            ? [
-                [
-                  _FilePickerField(
-                    fileName: pickedFileName,
-                    accentColor: accentColor,
-                    onTap: onPickFile,
-                  ),
-                ],
-                [nickname],
-                [guide],
-              ]
-            : [
-                [nickname],
-                [
-                  _WizardField(
-                    label: l10n.wizardM3uUrlLabel,
-                    ctrl: m3uUrlCtrl,
-                    hint: l10n.wizardM3uUrlHint,
-                    type: TextInputType.url,
-                    accentColor: accentColor,
-                  ),
-                ],
-                [guide],
-              ];
+    final rows = <List<Widget>>[
+      [
+        _WizardField(
+          label: l10n.wizardUniqueCodeLabel,
+          ctrl: uniqueCodeCtrl,
+          hint: l10n.wizardUniqueCodeHint,
+          accentColor: accentColor,
+          focusNode: codeFocusNode,
+        ),
+      ],
+      [
+        _WizardField(
+          label: l10n.wizardUsernameLabel,
+          ctrl: xtreamUserCtrl,
+          hint: l10n.wizardUsernameHint,
+          accentColor: accentColor,
+        ),
+        _WizardField(
+          label: l10n.wizardPasswordLabel,
+          ctrl: xtreamPassCtrl,
+          hint: l10n.wizardPasswordHint,
+          obscure: !passVisible,
+          accentColor: accentColor,
+          suffix: IconButton(
+            icon: Icon(
+              passVisible ? Icons.visibility_off : Icons.visibility,
+              color: AppTheme.mutedTextColor,
+            ),
+            tooltip: passVisible
+                ? l10n.wizardPasswordHide
+                : l10n.wizardPasswordShow,
+            onPressed: onTogglePass,
+          ),
+        ),
+      ],
+    ];
 
     return _WizardFrame(
       accentColor: accentColor,
       step: step,
       totalSteps: totalSteps,
       onBack: onBack,
-      title: isXtream
-          ? l10n.wizardCredsTitleXtream
-          : fromFile
-              ? l10n.wizardTypeFileTitle
-              : l10n.wizardTypeM3uTitle,
-      subtitle: isXtream
-          ? l10n.wizardCredsSubXtream
-          : fromFile
-              ? l10n.wizardCredsSubFile
-              : l10n.wizardCredsSubM3u,
-      // The error rides in the footer, beside the button that caused it, so
-      // it is never scrolled out of sight.
+      title: l10n.wizardAddPlaylistTitle,
+      subtitle: l10n.wizardCredsSubXtream,
       footer: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -1502,9 +1124,7 @@ class _CredentialsPage extends StatelessWidget {
           ),
         ],
       ),
-      // The server address is the long one: it gets the wider column.
-      body: _fieldRows(context, rows,
-          flex: isXtream ? const {0: [2, 3]} : const {}),
+      body: _fieldRows(context, rows),
     );
   }
 }
@@ -1538,97 +1158,12 @@ Widget _fieldRows(BuildContext context, List<List<Widget>> rows,
   return Column(crossAxisAlignment: CrossAxisAlignment.start, children: children);
 }
 
-/// The "choose a file" control on the Playlist File page, styled like a
-/// wizard text field; shows the picked file's name once chosen.
-class _FilePickerField extends StatelessWidget {
-  const _FilePickerField({
-    required this.fileName,
-    required this.accentColor,
-    required this.onTap,
-  });
-
-  final String? fileName;
-  final Color accentColor;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    final tv = PlatformHelper.isTV(context);
-    final picked = fileName != null;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _FieldLabel(l10n.wizardFileFieldLabel),
-        const SizedBox(height: 6),
-        TvFocusable(
-          wrapsGesture: false,
-          onTap: onTap,
-          borderRadius: _fieldRadius,
-          child: Material(
-            color: AppTheme.surfaceVariantColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: _fieldRadius,
-              side: BorderSide(
-                color: picked ? accentColor : AppTheme.fieldBorderColor,
-                width: picked ? 1.5 : 1,
-              ),
-            ),
-            child: InkWell(
-              borderRadius: _fieldRadius,
-              onTap: onTap,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: SizedBox(
-                  height: tv ? 56 : 54,
-                  child: Row(
-                    children: [
-                      Icon(
-                        picked
-                            ? Icons.description_rounded
-                            : Icons.folder_open_rounded,
-                        color: picked ? accentColor : AppTheme.mutedTextColor,
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          fileName ?? l10n.wizardFileChoose,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: _fieldTextStyle(tv).copyWith(
-                            color: picked
-                                ? Colors.white
-                                : AppTheme.mutedTextColor,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        picked ? l10n.wizardFileChange : l10n.wizardFileBrowse,
-                        style: TextStyle(
-                          color: accentColor,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
 class _WizardField extends StatelessWidget {
   const _WizardField({
     required this.label,
     required this.ctrl,
     required this.hint,
     required this.accentColor,
-    this.type,
     this.obscure = false,
     this.suffix,
     this.focusNode,
@@ -1638,7 +1173,6 @@ class _WizardField extends StatelessWidget {
   final TextEditingController ctrl;
   final String hint;
   final Color accentColor;
-  final TextInputType? type;
   final bool obscure;
   final Widget? suffix;
   // See TvFocusable.focusNode's doc — plain autofocus isn't reliable on a
@@ -1659,11 +1193,10 @@ class _WizardField extends StatelessWidget {
           builder: (context, fieldNode) => TextField(
             controller: ctrl,
             focusNode: fieldNode,
-            keyboardType: type,
             obscureText: obscure,
             autocorrect: false,
             // No suggestion strip for addresses, logins or secrets.
-            enableSuggestions: !obscure && type != TextInputType.url,
+            enableSuggestions: !obscure,
             // Not an autofill field. An empty hint list does NOT opt out: it
             // leaves the system to guess, and next to a password box it
             // guessed the server address was a password. null opts out.

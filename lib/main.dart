@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'dart:io';
-
 import 'package:material_ui/material_ui.dart';
 import 'package:open_iptv/core/services/video_layer_mode.dart';
 import 'package:flutter/services.dart';

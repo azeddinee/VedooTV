@@ -1,5 +1,5 @@
 name: open_iptv
-description: Open-source, ad-free, cross-platform IPTV client.
+description: VedooTV IPTV player for Android phones, Android TV and Fire TV.
 publish_to: none
 version: 0.16.3+405
 
@@ -99,14 +99,11 @@ flutter_launcher_icons:
 flutter_native_splash:
   color: "#0A0A12"
   image: assets/branding/png/splash_mark.png
-  branding: assets/images/wordmark.png
-  branding_bottom_padding: 48
   android: true
   ios: true
   android_12:
     color: "#0A0A12"
     image: assets/branding/png/splash_mark.png
-    branding: assets/images/wordmark.png
 
 flutter:
   uses-material-design: true

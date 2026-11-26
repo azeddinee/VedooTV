@@ -4,7 +4,7 @@ import 'package:material_ui/material_ui.dart';
 const kBrandInk = Color(0xFF0A0A12);
 
 /// Shown while the app starts up (database opening), laid out exactly like
-/// the native splash — the "Open Ring" mark centred, the wordmark near the
+/// the native splash — the VedooTV orbital mark centred, the wordmark near the
 /// bottom — so launch flows from the system splash straight into the app
 /// instead of flashing a white screen with a spinner.
 class BrandSplash extends StatelessWidget {
@@ -26,10 +26,14 @@ class BrandSplash extends StatelessWidget {
           ),
           Positioned(
             bottom: 48,
-            child: Image(
-              image: AssetImage('assets/images/wordmark.png'),
-              width: 200,
-              height: 50,
+            child: Text(
+              'VedooTV',
+              style: TextStyle(
+                color: Color(0xFFFFFFFF),
+                fontSize: 25,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 1.2,
+              ),
             ),
           ),
         ],

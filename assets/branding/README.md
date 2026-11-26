@@ -1,12 +1,11 @@
-# OpenIPTV brand
+# VedooTV brand
 
 Source artwork for the app icon, splash screen, Android TV banner and in-app
-logo ("Open Ring": a gradient ring left open at the top — the O of Open —
-around a play button).
+logo (an abstract orbital mark with no TV-screen or play-button symbol).
 
 - Brand gradient: `#8B5CF6` (violet) → `#3B82F6` (blue) → `#22D3EE` (cyan)
 - Ink background: `#0A0A12` (tile glow from `#1E1B36`)
-- Wordmark: "Open" in Google Sans Medium + "IPTV" in Google Sans Bold with the
+- Wordmark: "vedoo" in Google Sans Medium + ".tv" in Google Sans Bold with the
   gradient.
 
 | File | Use |
@@ -15,12 +14,9 @@ around a play button).
 | `icon_tile.svg` | rounded tile, for marketing/README |
 | `mark.svg` | mark on transparent, with glow (adaptive icon foreground, in-app logo, splash) |
 | `mark_mono.svg` | single-colour mark (themed/monochrome icon, notification icon) |
-| `wordmark.svg` | "OpenIPTV" wordmark |
+| `wordmark.svg` | "vedoo.tv" wordmark |
 | `tv_banner.svg` | Android TV / Fire TV launcher banner |
 | `readme_banner.svg` | the banner at the top of the GitHub README |
-
-Run  (needs Firefox, Pillow, numpy) to
-re-export everything below after editing an SVG.
 
 Run `python3 assets/branding/export.py` (needs Firefox, Pillow and numpy) to
 re-export everything below after editing an SVG.
