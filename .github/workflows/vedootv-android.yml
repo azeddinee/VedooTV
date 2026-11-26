@@ -128,6 +128,12 @@ jobs:
         # removed dynamically referenced icons and caused startup to hang.
         run: flutter build apk --release --target-platform android-arm64
 
+      - name: Build optimized ARMv7 release APK
+        if: env.RELEASE_SIGNING_READY == 'true'
+        # Additional 32-bit ARM build for older Android / Fire TV hardware.
+        # Use a separate build directory so this cannot overwrite the ARM64 APK.
+        run: flutter build apk --release --target-platform android-arm --build-dir build/armv7
+
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
         with:
@@ -142,6 +148,15 @@ jobs:
         with:
           name: vedootv-android-release-arm64
           path: build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload optimized ARMv7 release APK
+        if: env.RELEASE_SIGNING_READY == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: vedootv-android-release-armv7
+          path: build/armv7/app/outputs/flutter-apk/app-release.apk
           if-no-files-found: error
           retention-days: 14
 # Signed release build trigger after permanent signing-key setup.
